@@ -1,0 +1,38 @@
+#server:
+#  ssl:
+#    enabled: true
+#    client-auth: need
+#    key-store: classpath:client-app.jks
+#    key-store-password: 3237801
+#    key-alias: client-app
+#    key-store-type: JKS
+#    key-store-provider: SUN
+#    trust-store: classpath:client-app.jks
+#    trust-store-password: 3237801
+#    trust-store-type: JKS
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      orderService:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        waitDurationInOpenState: 5s
+        slidingWindowType: COUNT_BASED
+
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
